@@ -31,10 +31,11 @@ class UserController extends Controller
     }
 
 
-    public function show($id)
-    {
-        //
-    }
+    public function show(Request $request, User $user)
+	{
+		if (!$request->ajax()) return view();
+		return response()->json(['user' => $user], 200);
+	}
 
 
     public function edit($id)
@@ -42,13 +43,17 @@ class UserController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        $user->update($request->all());
+		if (!$request->ajax()) return back()->with('success', 'User updated');
+		return response()->json([], 204);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, User $user)
     {
-        //
+        $user->delete();
+		if (!$request->ajax()) return back()->with('success', 'User deleted');
+		return response()->json([], 204);
     }
 }

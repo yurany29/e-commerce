@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\Category\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -21,7 +22,7 @@ class CategoryController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $category = new Category($request->all());
 		$category->save();
@@ -30,10 +31,11 @@ class CategoryController extends Controller
     }
 
 
-    public function show($id)
-    {
-        //
-    }
+    public function show(Request $request, Category $category)
+	{
+		if (!$request->ajax()) return view();
+		return response()->json(['category' => $category], 200);
+	}
 
 
     public function edit($id)
@@ -41,13 +43,17 @@ class CategoryController extends Controller
         //
     }
 
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, Category $category)
     {
-        //
+        $category->update($request->all());
+		if (!$request->ajax()) return back()->with('success', 'Category updated');
+		return response()->json([], 204);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, Category $category)
     {
-        //
+        $category->delete();
+		if (!$request->ajax()) return back()->with('success', 'Category deleted');
+		return response()->json([], 204);
     }
 }
