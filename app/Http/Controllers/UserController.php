@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\User\UserRequest;
 
-class CategoryController extends Controller
+class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = Category::get();
+		$users = User::get();
         if (!$request->ajax()) return view();
-		return response()->json(['Categories' => $categories], 200);
+		return response()->json(['Users' => $users], 200);
     }
 
 
@@ -21,12 +22,12 @@ class CategoryController extends Controller
     }
 
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $category = new Category($request->all());
-		$category->save();
-		if (!$request->ajax()) return back()->with('success', 'Category crated');
-		return response()->json(['status' => 'category created', 'category' => $category], 201);
+        $user = new User($request->all());
+		$user->save();
+		if (!$request->ajax()) return back()->with('success', 'User crated');
+		return response()->json(['status' => 'user created', 'User' => $user], 201);
     }
 
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Cart;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,14 +30,35 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+	//cear casteadores
+    protected $casts = [
+    	'created_at' => 'datetime:Y-m-d',
+		'update_at' => 'datetime:Y-m-d'
+    ];
 
+	protected $appends = ['full_name'];
+
+	//crear un accesor
+    public function getFullNameAttribute()
+    {
+        return "{$this->name} {$this->last_name}";
+    }
+
+    //crear un mutador
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+	public function setRememberTokenAttribute()
+    {
+        $this->attributes['remember_token'] = Str::random(20);
+    }
+
+	//crear las relaciones
 	public function cart()
 	{
 		return $this->belongsTo(Cart::class, 'user_id', 'id');
 	}
 
-
-    // protected $casts = [
-    //     'email_verified_at' => 'datetime',
-    // ];
 }
