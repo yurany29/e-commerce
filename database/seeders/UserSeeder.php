@@ -19,5 +19,6 @@ class UserSeeder extends Seeder
             'password' => 'yurany2005',
             'remember_token' => Str::random(10),
         ]);
+		$user->save();
     }
 }

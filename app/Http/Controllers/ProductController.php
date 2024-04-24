@@ -8,6 +8,13 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+
+	public function home()
+    {
+        $products = Product::get();
+        return view('index', compact('products'));
+    }
+
     public function index(Request $request)
     {
         $products = Product::get();
