@@ -40,26 +40,26 @@
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
-							{{-- @role('admin') --}}
+							@role('admin')
                             {{-- users --}}
-                            <a class="dropdown-item" href="">
+                            <a class="dropdown-item" href="{{route('users.index')}}">
                                 Usuarios
                             </a>
-							{{-- @endrole --}}
+							@endrole
 
-							{{-- @role('admin|librarian') --}}
-                            {{-- Books --}}
-                            <a class="dropdown-item" href="">
-                                Libros
+							@role('admin')
+                            {{-- Products --}}
+                            <a class="dropdown-item" href="{{route('products.index')}}">
+                                Productos
                             </a>
-							{{-- @endrole --}}
+							@endrole
 
-							{{-- @can('categories.index') --}}
+							@role('admin')
 								{{-- categories --}}
-								<a class="dropdown-item" href="">
+								<a class="dropdown-item" href="{{route('categories.index')}}">
 									Categorias
 								</a>
-							{{-- @endcan --}}
+							@endrole
 
                             {{-- Logout --}}
                             <a class="dropdown-item" href="{{ route('logout') }}"

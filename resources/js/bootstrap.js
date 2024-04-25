@@ -3,7 +3,7 @@ import * as bootstrap from 'bootstrap'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import jquery from 'jquery'
-// import '@fortawesome/fontawesome-free/js/all.js'
+import '@fortawesome/fontawesome-free/js/all.js'
 
 import 'datatables.net-bs5'
 // import 'datatables.net-buttons-bs5'

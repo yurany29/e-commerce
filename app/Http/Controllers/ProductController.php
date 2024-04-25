@@ -17,8 +17,8 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $products = Product::get();
-        if (!$request->ajax()) return view();
+        $products = Product::with('category')->whereHas('category')->get();
+        if (!$request->ajax()) return view('products.index', compact('products'));
 		return response()->json(['Products' => $products], 200);
     }
 
