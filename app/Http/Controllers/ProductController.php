@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Product\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -17,8 +18,9 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+		$categories = Category::get();
         $products = Product::with('category')->whereHas('category')->get();
-        if (!$request->ajax()) return view('products.index', compact('products'));
+        if (!$request->ajax()) return view('products.index', compact('products', 'categories'));
 		return response()->json(['Products' => $products], 200);
     }
 

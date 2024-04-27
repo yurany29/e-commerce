@@ -12,8 +12,9 @@ class UserController extends Controller
 {
 	public function index(Request $request)
 	{
+		$roles = Role::get();
 		$users = User::with('roles')->get();
-		if (!$request->ajax()) return view('users.index', compact('users'));
+		if (!$request->ajax()) return view('users.index', compact('users', 'roles'));
 		return response()->json(['Users' => $users], 200);
 	}
 
@@ -28,6 +29,7 @@ class UserController extends Controller
 
 	public function store(UserRequest $request)
 	{
+		dd($request->all());
 		$user = new User($request->all());
 		$user->save();
 		$user->assignRole($request->role);

@@ -45,11 +45,11 @@ class UserRequest extends FormRequest
 			'number_id.numeric' => 'La identificacion debe ser valida',
 			'name.required' => 'EL nombre es requerido',
 			'name.string' => 'El nombre debe ser valido',
-			'last_name.require' => 'El apellido es requerido',
+			'last_name.required' => 'El apellido es requerido',
 			'last_name.string' => 'El apellido debe ser valido',
 			'email.required' => 'El email es requerido',
 			'email.email' => 'El email debe ser valido',
-			'password.required' => 'La conraseña es reuerida',
+			'password.required' => 'La conraseña es requerida',
 			'password.confirmed' => 'La contraseña debe ser confimada',
 			'password.string' => 'La contraseña debe ser valida',
 			'password.min:8' => 'La contraseña debe tener maximo 8 caracteres'

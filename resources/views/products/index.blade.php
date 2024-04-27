@@ -4,6 +4,6 @@
             <h1>PRODUCTOS</h1>
         </div>
 
-			<the-products-table :products="{{ $products }}"/>
+			<the-products-table :products="{{ $products }}" :categories_data="{{ $categories }}"/>
     </section>
 </x-app>

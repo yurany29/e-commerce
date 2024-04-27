@@ -21,11 +21,11 @@
 								<td>
 									<div class="d-flex justify-content-center">
 
-										<button type="button" class="btn btn-primary btn-sm" title="Editar" @click="editBook(book)">
+										<button type="button" class="btn btn-primary btn-sm" title="Editar" @click="editCategory(category)">
 											<i class="fas fa-pencil-alt"></i>
 										</button>
 
-										<button type="button" class="btn btn-danger btn-sm ms-2" title="Eliminar" @click="deleteBook(book)">
+										<button type="button" class="btn btn-danger btn-sm ms-2" title="Eliminar" @click="deleteCategory(category)">
 											<i class="fas fa-trash-alt"></i>
 										</button>
 									</div>
@@ -36,20 +36,28 @@
 				</div>
 			</div>
 			<div>
-				<book-modal :authors_data="authors_data" :book_data="book" ref="book_modal" />
+				<category-modal :category_data="category" ref="user_modal"/>
 			</div>
 		</div>
 	</section>
 </template>
 
 <script>
+import {deleteMessage, successMessage} from '@/helpers/Alerts.js'
+import CategoryModal from './CategoryModal.vue'
+
 	export default {
 		name: '',
-		components: {},
+		components: {
+			CategoryModal
+		},
 		props: ['categories'],
 
 		data() {
-			return {}
+			return {
+				modal: null,
+				category: null
+			}
 		},
 		mounted() {
 			this.index()
@@ -57,7 +65,30 @@
 		methods: {
 			async index() {
 				$('#book_table').DataTable()
-			}
+				const modal_id = document.getElementById('category_modal')
+				this.modal = new bootstrap.Modal(modal_id)
+				modal_id.addEventListener('hidden.bs.modal', e => {
+					this.$refs.user_modal.reset()
+				})
+			},
+			openModal(){
+				this.modal.show()
+			},
+
+			editCategory(category){
+				this.category = category
+				this.openModal()
+			},
+			async deleteCategory({id}){
+				if (!await deleteMessage()) return
+				try{
+					await axios.delete(`/categories/${id}`) //destructurar el id y enviar
+					window.location.reload()
+					await successMessage({ is_delete : true, reload : true })
+				} catch(error){
+					console.error(error)
+				}
+			},
 		}
 	}
 </script>
