@@ -15,19 +15,19 @@
 						<section class="row">
 
 							<!-- Image -->
-							<!-- <div class="col-12 d-flex justify-content-center mt-1">
+							<div class="col-12 d-flex justify-content-center mt-1">
 								<img :src="image_preview" alt="Imagen Libro" class="img-thumbnail" width="170" height="170">
-							</div> -->
+							</div>
 
 							<!-- Load Image -->
-							<!-- <div class="col-12 mt-1 ">
+							<div class="col-12 mt-1 ">
 								<label for="file" class="form-label">Imagen</label>
 								<input type="file" :class="`form-control ${back_errors['file'] ? 'is-invalid' : ''}`"
 									id="file" accept="image/*" @change="previewImage">
 								<span class="invalid-feedback" v-if="back_errors['file']">
 									{{ back_errors['file'] }}
 								</span>
-							</div> -->
+							</div>
 
 							<!-- Name -->
 							<div class="col-12 mt-2">
@@ -96,13 +96,13 @@
 </template>
 <script>
 	import {successMessage, handlerErrors} from '@/helpers/Alerts.js'
-	//import BackendError from '../Components/BackendError.vue';
+	import BackendError from '../Components/BackendError.vue';
 	import { Field, Form } from 'vee-validate'
 	import * as yup from 'yup'
 
 	export default {
 		props: ['categories_data', 'product_data'],
-		components: { Field, Form },
+		components: { Field, Form, BackendError },
 
 		watch:{
 		product_data(new_value){
@@ -110,7 +110,7 @@
 			if (!this.product.id) return
 			this.is_create = false
 			this.category = this.product.category_id
-			//this.image_preview = this.book.file.route
+			this.image_preview = this.product.file.route
 			}
 		},
 
@@ -119,7 +119,9 @@
 				is_create: true,
 				product: {},
 				category: null,
-				back_errors: {}
+				back_errors: {},
+				file: null,
+				image_preview : '/storage/images/products/default.png',
 			}
 		},
 
@@ -144,16 +146,30 @@
 		methods: {
 			async index() {},
 
+			previewImage(envet){
+			this.file = envet.target.files[0] //carga la imagen en la target de html
+			this.image_preview = URL.createObjectURL(this.file) //crea una url temporal para cargar imagen en vista previa
+		},
+
 			async saveProduct() {
 			try {
 				this.product.category_id = this.category
-					//const book = this.createFormData(this.book)
-				if (this.is_create) await axios.post('/products', this.product)
-				else await axios.put(`/products/${this.product.id}`, this.product)
+				const product = this.createFormData(this.product)
+				if (this.is_create) await axios.post('/products/store', product)
+				else await axios.post(`/products/update/${this.product.id}`, product)
 				await successMessage({ reload: true })
 			} catch (error) {
 				this.back_errors = await handlerErrors(error)
 			}
+		},
+
+			createFormData(data){
+			const form_data = new FormData()
+			if (this.file) form_data.append('file', this.file, this.file.name)
+			for (const prop in data){
+				form_data.append(prop, data[prop])
+			}
+			return form_data
 		},
 
 			reset(){
@@ -162,9 +178,9 @@
 			this.category =  null,
 			this.$parent.product = {},
 			this.back_errors = {},
-			//this.file = null,
-			//this.image_preview = '/storage/images/books/default.png',
-			//document.getElementById('file').value = ''
+			this.file = null,
+			this.image_preview = '/storage/images/products/default.png',
+			document.getElementById('file').value = ''
 			setTimeout(() => this.$refs.form.resetForm(),100);
 		}
 		}

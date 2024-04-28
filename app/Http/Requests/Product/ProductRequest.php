@@ -6,6 +6,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
 {
+	protected $rules = [
+		'category_id' => ['required', 'exists:categories,id'],
+		'name' => ['required', 'string'],
+		'price' => ['required', 'numeric'],
+		'description' => ['required', 'string'],
+		'stock' => ['required', 'numeric'],
+		'file' => ['required', 'image']
+	];
 
     public function authorize()
     {
@@ -14,15 +22,8 @@ class ProductRequest extends FormRequest
 
     public function rules()
     {
-        $rules = [
-            'category_id' => ['required', 'exists:categories,id'],
-			'name' => ['required', 'string'],
-			'price' => ['required', 'numeric'],
-			'description' => ['required', 'string'],
-			'stock' => ['required', 'numeric'],
-        ];
 
-		return $rules;
+		return $this->rules;
     }
 
 	public function messages()
@@ -37,6 +38,8 @@ class ProductRequest extends FormRequest
 			'description.string' => 'La descripcion debe ser valida',
 			'stock.required' => 'El stock es requerido',
 			'stock.numeric' => 'El stock debe ser valido',
+			'file.required' => 'La imagen es requerida',
+			'file.image' => 'El archivo debe er imagen valida',
 		];
 	}
 }

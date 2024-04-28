@@ -25,8 +25,8 @@ Route::group(['middleware' => ['auth']], function () {
 	//products
 	Route::group(['prefix' => 'products', 'middleware' => ['role:admin'], 'controller' => ProductController::class], function () {
 		Route::get('/', 'index')->name('products.index');
-		Route::post('/', 'store')->name('products.store');
-		Route::put('/{product}', 'update')->name('products.update');
+		Route::post('/store', 'store')->name('products.store');
+		Route::post('/update/{product}', 'update')->name('products.update');
 		Route::delete('/{product}', 'destroy')->name('products.destroy');
 	});
 

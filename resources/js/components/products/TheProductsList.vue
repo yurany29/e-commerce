@@ -2,7 +2,7 @@
 	<section class="d-flex flex-wrap justify-content-center">
 
 		<div v-for="product in products" :key="product.id" class="card mx-2 my-3 card_size">
-			<img src="" class="card-img-top" alt="Portada Libro">
+			<img :src="product.file.route" class="card-img-top" alt="Producto">
 			<div class="card-body">
 				<h5 class="card-title">{{ product.name }}</h5>
 				<div class="d-flex flex-wrap">

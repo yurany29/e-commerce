@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Cart;
+use App\Models\File;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,11 +25,16 @@ class Product extends Model
 	{
 		return $this->belongsTo(Category::class, 'category_id', 'id');
 	}
-	
+
 	public function cart()
 	{
 		return $this->belongsTo(Cart::class, 'product_id', 'id');
 	}
+
+	public function file()
+    {
+        return $this->morphOne(File::class, 'fileable');
+    }
 
 
 }

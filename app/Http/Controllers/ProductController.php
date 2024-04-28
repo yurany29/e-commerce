@@ -2,26 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Product\ProductRequest;
-use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Http\Request;
+use App\Http\Traits\UploadFile;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Product\ProductRequest;
+use App\Http\Requests\Product\ProductUpdateRequest;
+
 
 class ProductController extends Controller
 {
+	use UploadFile;
 
 	public function home()
     {
-        $products = Product::get();
+        $products = Product::with('Category', 'file')->get();
         return view('index', compact('products'));
     }
 
     public function index(Request $request)
     {
 		$categories = Category::get();
-        $products = Product::with('category')->whereHas('category')->get();
-        if (!$request->ajax()) return view('products.index', compact('products', 'categories'));
-		return response()->json(['Products' => $products], 200);
+        $products = Product::with('category', 'file')->whereHas('category')->get();
+		return view('products.index', compact('products', 'categories'));
     }
 
 
@@ -33,17 +37,25 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        $product = new Product($request->all());
-		$product->save();
-		if (!$request->ajax()) return back()->with('success', 'Product crated');
-		return response()->json(['status' => 'product created', 'Product' => $product], 201);
+		try{
+			DB::beginTransaction();
+			$product = new Product($request->all());
+			$product->save();
+			$this->uploadFile($product, $request);
+			DB::commit();
+			return response()->json(['status' => 'product created', 'Product' => $product], 200);
+		}catch(\Throwable $th){
+			DB::rollback();
+			throw $th;
+		}
+
     }
 
 
     public function show(Request $request, Product $product)
 	{
 		if (!$request->ajax()) return view();
-		return response()->json(['product' => $product], 200);
+		return response()->json(['product' => $product], 201);
 	}
 
 
@@ -52,16 +64,25 @@ class ProductController extends Controller
         //
     }
 
-    public function update(ProductRequest $request, Product $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
-        $product->update($request->all());
-		if (!$request->ajax()) return back()->with('success', 'Product updated');
-		return response()->json([], 204);
+		try{
+			DB::beginTransaction();
+			$product->update($request->all());
+			$this->uploadFile($product, $request);
+			DB::commit();
+			return response()->json([], 204);
+		}catch(\Throwable $th){
+			DB::rollBack();
+			throw $th;
+		}
+        
     }
 
     public function destroy(Request $request, product $product)
     {
         $product->delete();
+		$this->deleteFile($product);
 		if (!$request->ajax()) return back()->with('success', 'Product deleted');
 		return response()->json([], 204);
     }
