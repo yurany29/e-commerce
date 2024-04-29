@@ -1,12 +1,10 @@
 <template>
 <section>
-    <div v-for="category in category" :key="category.id" class="container card d-flex flex-wrap mx-2 my-5 ">
-		<a :href="`/products/all`" class="btn "><strong>Ver mas</strong></a>
-      <div class="card-title">
-        <h4><strong>Categoría: {{ category.name }}</strong></h4>
-      </div>
-		<div class="row">
-			<div v-for="product in filteredProducts(category.id)" :key="product.id" class="card mx-2 my-3 card_size col-md-6 col-sm-6">
+	<div class="justify-content-center">
+		<h1>Productos de la categoria</h1>
+	</div>
+		<div class="row" >
+			<div v-for="product in products" :key="product.id" class="card mx-2 my-3 card_size col-md-6 col-sm-6">
 				<img :src="product.file.route" class="card-img-top" alt="Producto">
 				<div class="card-body">
 					<h5 class="card-title">{{ product.name }}</h5>
@@ -18,20 +16,18 @@
 						<strong>Stock: </strong> {{ product.stock }}
 						</span>
 					</div>
+					<a :href="`/products/show/${product.id}`" class="btn btn-primary justify-content-center mx-2 my-3">Ver detalles</a>
 				</div>
 			</div>
 		</div>
-    </div>
 </section>
 </template>
 
 <script>
-import AllProducts from './AllProducts.vue'
-
 export default {
   props: ['products', 'category'],
 
-  components:{ AllProducts }, 
+  components:{ },
 
   data() {
     return {
@@ -39,7 +35,7 @@ export default {
 	};
   },
   methods: {
-    filteredProducts(categoryId) {
+    ProductsByCategory(categoryId) {
       // Filtrar productos por ID de categoría
       return this.products.filter((product) => product.category.id === categoryId);
     },

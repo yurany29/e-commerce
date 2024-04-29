@@ -22,12 +22,18 @@ Route::group(['middleware' => ['auth']], function () {
 		Route::delete('/{user}', 'destroy')->name('users.destroy');
 	});
 
-	//products
+	//products admin
 	Route::group(['prefix' => 'products', 'middleware' => ['role:admin'], 'controller' => ProductController::class], function () {
 		Route::get('/', 'index')->name('products.index');
 		Route::post('/store', 'store')->name('products.store');
 		Route::post('/update/{product}', 'update')->name('products.update');
 		Route::delete('/{product}', 'destroy')->name('products.destroy');
+	});
+
+	//products user
+	Route::group(['prefix' => 'products', 'controller' => ProductController::class], function () {
+		Route::get('/all', 'allproducts')->name('products.allproducts');
+		Route::get('/show/{product}', 'show')->name('products.show');
 	});
 
 	//categories

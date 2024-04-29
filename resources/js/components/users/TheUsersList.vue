@@ -23,7 +23,7 @@
 								<td>{{ user.name }}</td>
 								<td>{{ user.last_name }}</td>
 								<td>{{ user.email }}</td>
-								<td>{{ user.roles.name}}</td>
+								<td>{{ user.roles[0].name}}</td>
 								<td>
 									<div class="d-flex justify-content-center">
 

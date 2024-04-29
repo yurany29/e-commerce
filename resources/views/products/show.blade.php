@@ -1,9 +1,9 @@
 <x-app title="Productos">
     <section class="container">
         <div class="d-flex justify-content-center my-4">
-            <h1>Productos disponibles</h1>
+			<h1>DETALLES</h1>
         </div>
 
-			<the-products-list :products="{{ $products }}" :category="{{$category}}"/>
+			<show-product :product="{{ $product }}"/>
     </section>
 </x-app>

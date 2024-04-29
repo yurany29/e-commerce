@@ -19,8 +19,9 @@
 								<Field name="role" v-slot="{ errorMessage, field }" v-model="user.role">
 									<label for="role">Rol</label>
 
-									<v-select  id="role" :options="roles_data" label="name" v-model="user.role" :reduce="role => role.id" v-bind="field" placeholder="Seleccione el rol" :clearable="false" :class="`${errorMessage || back_errors['role'] ? 'is-invalid' : ''}`">
+									<v-select  id="role" :options="roles_data" label="role" v-model="user.role"  v-bind="field" placeholder="Seleccione el rol" :clearable="false" :class="`${errorMessage || back_errors['role'] ? 'is-invalid' : ''}`">
 									</v-select>
+									<span class="invalid-feedback">{{ errorMessage }}</span>
 									<span class="invalid-feedback">{{ back_errors['role'] }}</span>
 
 								</Field>
@@ -93,8 +94,8 @@
 
 					<!-- Buttons -->
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="sumbit" class="btn btn-primary">Almacenar</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+						<button type="submit" class="btn btn-primary">Enviar</button>
 					</div>
 				</Form>
 			</div>
@@ -107,7 +108,7 @@
 	import {Field, Form} from 'vee-validate';
 	import * as yup from 'yup';
 	export default {
-		props: ['roles_data'],
+		props: ['roles_data', 'user_data'],
 		components: {Field, Form},
 
 		data() {
@@ -120,27 +121,27 @@
 		},
 
 		watch:{
-		user_data(new_value){
-			this.user = {...new_value}
-			if (!this.user.id) return
-			this.is_create = false
-			this.role = this.user.role_id
+			user_data(new_value){
+				this.user = {...new_value}
+				if (!this.user.id) return
+				this.is_create = false
+				this.role = this.user.role_id
 			}
 		},
 
 		computed: {
-		schema(){
-			return yup.object({
-				role: yup.string().required(),
-				number_id: yup.number().required().positive().integer(),
-				name: yup.string().required(),
-				last_name: yup.string().required(),
-				email: yup.string().required(),
-				password: yup.string().required(),
-				password_confirmation: yup.string().required(),
-				});
+			schema(){
+				return yup.object({
+					role: yup.string().required(),
+					number_id: yup.number().required().positive().integer(),
+					name: yup.string().required(),
+					last_name: yup.string().required(),
+					email: yup.string().required(),
+					password: this.is_create ? yup.string().required() : yup.string(),
+					password_confirmation: this.is_create ? yup.string().required() : yup.string(),
+					});
+			},
 		},
-	},
 
 		created(){
 			this.index()
@@ -150,15 +151,17 @@
 
 		methods: {
 			async index() {
+				console.log('index');
 			},
 
 			async saveUser() {
-			try {
-				if (this.is_create) await axios.post('/users', this.user)
-				else await axios.post(`/users/${this.user.id}`, this.user)
-				await successMessage({ reload: true })
-			} catch (error) {
-				this.back_errors = await handlerErrors(error)
+				try {
+					console.log('saveUser');
+					if (this.is_create) await axios.post('/users', this.user)
+					else await axios.put(`/users/${this.user.id}`, this.user)
+					await successMessage({ reload: true })
+				} catch (error) {
+					this.back_errors = await handlerErrors(error)
 				}
 			},
 
@@ -176,3 +179,4 @@
 		}
 	}
 </script>
+

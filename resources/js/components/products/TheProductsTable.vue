@@ -44,15 +44,15 @@
 				</div>
 			</div>
 			<div>
-				<product-modal :categories_data="categories_data" :product_data="product" ref="product_modal"/>
+				<product-modal :categories_data="categories_data" :product_data="product" ref="product_modal" />
 			</div>
 		</div>
 	</section>
 </template>
 
 <script>
-import {deleteMessage, successMessage} from '@/helpers/Alerts.js'
-import ProductModal from './ProductModal.vue';
+	import { deleteMessage, successMessage } from '@/helpers/Alerts.js'
+	import ProductModal from './ProductModal.vue'
 
 	export default {
 		name: '',
@@ -79,23 +79,23 @@ import ProductModal from './ProductModal.vue';
 					this.$refs.product_modal.reset()
 				})
 			},
-			openModal(){
+			openModal() {
 				this.modal.show()
 			},
 
-			editProduct(product){
+			editProduct(product) {
 				this.product = product
 				this.openModal()
 			},
-			async deleteProduct({id}){
-				if (!await deleteMessage()) return
-				try{
+			async deleteProduct({ id }) {
+				if (!(await deleteMessage())) return
+				try {
 					await axios.delete(`/products/${id}`) //destructurar el id y enviar
-					await successMessage({ is_delete : true, reload : true })
-				} catch(error){
+					await successMessage({ is_delete: true, reload: true })
+				} catch (error) {
 					console.error(error)
 				}
-			},
+			}
 		}
 	}
 </script>

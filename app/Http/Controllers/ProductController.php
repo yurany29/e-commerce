@@ -17,8 +17,11 @@ class ProductController extends Controller
 
 	public function home()
     {
-        $products = Product::with('Category', 'file')->get();
-        return view('index', compact('products'));
+		$category = Category::select('id', 'name')->get();
+        $products = Product::with('Category', 'file')
+			->where('stock', '>', 0)
+			->get();
+        return view('index', compact('products','category'));
     }
 
     public function index(Request $request)
@@ -26,6 +29,13 @@ class ProductController extends Controller
 		$categories = Category::get();
         $products = Product::with('category', 'file')->whereHas('category')->get();
 		return view('products.index', compact('products', 'categories'));
+    }
+
+	public function allproducts(Request $request )
+    {
+		$category = Category::select('id', 'name')->get();
+        $products = Product::with('category', 'file')->whereHas('category')->get();
+		return view('products.all', compact('products', 'category'));
     }
 
 
@@ -54,7 +64,8 @@ class ProductController extends Controller
 
     public function show(Request $request, Product $product)
 	{
-		if (!$request->ajax()) return view();
+		$product = Product::with('category', 'file')->whereHas('category')->where('id', $product->id)->first();
+		if (!$request->ajax()) return view('products.show', compact('product'));
 		return response()->json(['product' => $product], 201);
 	}
 
@@ -79,7 +90,7 @@ class ProductController extends Controller
         
     }
 
-    public function destroy(Request $request, product $product)
+    public function destroy(Request $request, Product $product)
     {
         $product->delete();
 		$this->deleteFile($product);

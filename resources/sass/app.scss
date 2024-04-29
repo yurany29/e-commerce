@@ -18,8 +18,13 @@
 @import 'vue-select/dist/vue-select.css';
 
 .card_size{
-	width: 18rem;
+	width: 12rem;
 }
 body{
 	background-color: rgb(255, 255, 255);
 }
+.tarjet {
+	width: 100%;
+	max-width: 300px;
+	height: 450px;
+  }

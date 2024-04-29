@@ -8,15 +8,20 @@ import TheUsersList from './components/users/TheUsersList.vue'
 import TheProductsTable from './components/products/TheProductsTable.vue'
 import TheCategoriesList from './components/categories/TheCategoriesList.vue'
 import BackendError from './components/Components/BackendError.vue'
+import AllProducts from './components/products/AllProducts.vue'
+import ShowProduct from './components/products/ShowProduct.vue'
 
 const app = createApp({
 	components: {
 		TheProductsList,
 		TheUsersList,
 		TheProductsTable,
-		TheCategoriesList
+		TheCategoriesList,
+		AllProducts,
+		ShowProduct,
 	}
 });
+
 
 app.component('v-select', vSelect)
 app.component('backend-error', BackendError)
