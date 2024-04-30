@@ -13,7 +13,7 @@
       <span class="mt-2">
         <strong>Stock: </strong> {{ product.stock }}
       </span>
-	  <button type="button" class="btn btn-primary justify-content-center mx-2 my-5">Agregar al carrito</button>
+	  <button type="button"  class="btn btn-primary justify-content-center mx-2 my-5">Agregar al carrito</button>
     </div>
   </div>
 </section>

@@ -10,6 +10,7 @@ import TheCategoriesList from './components/categories/TheCategoriesList.vue'
 import BackendError from './components/Components/BackendError.vue'
 import AllProducts from './components/products/AllProducts.vue'
 import ShowProduct from './components/products/ShowProduct.vue'
+import SearchProducts from './components/search/SearchProducts.vue'
 
 const app = createApp({
 	components: {
@@ -19,6 +20,7 @@ const app = createApp({
 		TheCategoriesList,
 		AllProducts,
 		ShowProduct,
+		SearchProducts,
 	}
 });
 

@@ -32,8 +32,13 @@ Route::group(['middleware' => ['auth']], function () {
 
 	//products user
 	Route::group(['prefix' => 'products', 'controller' => ProductController::class], function () {
-		Route::get('/all', 'allproducts')->name('products.allproducts');
 		Route::get('/show/{product}', 'show')->name('products.show');
+		Route::get('/search', 'search')->name('products.search');
+	});
+
+	//categories user
+	Route::group(['prefix' => 'categories', 'controller' => CategoryController::class], function () {
+		Route::get('/all/{category}', 'show')->name('categories.show');
 	});
 
 	//categories

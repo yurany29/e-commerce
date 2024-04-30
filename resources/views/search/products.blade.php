@@ -3,6 +3,6 @@
         <div class="d-flex justify-content-center my-4">
         </div>
 
-			<the-products-list :categories="{{$categories}}"/>
+			<search-products :products="{{ $products }}"/>
     </section>
 </x-app>

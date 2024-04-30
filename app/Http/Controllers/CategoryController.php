@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\Category\CategoryRequest;
@@ -33,7 +34,9 @@ class CategoryController extends Controller
 
     public function show(Request $request, Category $category)
 	{
-		if (!$request->ajax()) return view();
+		$products = Product::with('file')->where('category_id', $category->id)->get();
+		$category = Category::whereHas('products')->get();
+		if (!$request->ajax()) return view('products.all', compact('products', 'category'));
 		return response()->json(['category' => $category], 200);
 	}
 
