@@ -2,7 +2,7 @@
 	<section>
 		<div class="card">
 			<div class="card-header d-flex justify-content-end">
-				<button class="btn btn-success" @click="openModal">Agregar usuario</button>
+				<button class="btn btn-success" @click="openModal"><i class="fa-solid fa-user-plus"></i> Agregar usuario</button>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive my-4 mx-2">

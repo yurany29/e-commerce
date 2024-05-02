@@ -11,6 +11,7 @@ class CartFactory extends Factory
         return [
             'user_id' => $this->faker->randomElement([1,2,3,4,5,6,7,8,9,10]),
 			'product_id' => $this->faker->randomElement([1,2,3,4,5,6,7,8,9,10]),
+			'quantity' => $this->faker->randomElement([1,2,3,4,5,6,7,8,9,10])
         ];
     }
 }

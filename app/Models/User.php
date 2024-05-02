@@ -57,9 +57,9 @@ class User extends Authenticatable
     }
 
 	//crear las relaciones
-	public function cart()
+	public function carts()
 	{
-		return $this->belongsTo(Cart::class, 'user_id', 'id');
+		return $this->hasMany(Cart::class, 'user_id', 'id');
 	}
 
 }

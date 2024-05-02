@@ -2,7 +2,7 @@
 	<section>
 		<div class="card">
 			<div class="card-header d-flex justify-content-end">
-				<button class="btn btn-success" @click="openModal">Agregar Categoria</button>
+				<button class="btn btn-success" @click="openModal"><i class="fa-solid fa-circle-plus"></i> Agregar Categoria</button>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive my-4 mx-2">

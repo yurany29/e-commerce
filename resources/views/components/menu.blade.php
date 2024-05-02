@@ -13,7 +13,7 @@
             <ul class="navbar-nav me-auto ">
 				<form method="GET" action="{{route('products.search')}}" class="d-flex">
 					<input type="search" name="search" class="form-control" placeholder="Buscar producto">
-					<button type="submit" class="btn btn-primary">Buscar</button>
+					<button type="submit" class="btn btn-primary mx-2"><i class="fa-solid fa-magnifying-glass"></i></button>
 				</form>
             </ul>
 

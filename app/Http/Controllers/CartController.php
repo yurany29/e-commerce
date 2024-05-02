@@ -11,15 +11,9 @@ class CartController extends Controller
     public function index(Request $request)
     {
         $carts = Cart::get();
-        if (!$request->ajax()) return view();
-		return response()->json(['Carts' => $carts], 200);
+        return view('cart.index');
     }
 
-
-    public function create()
-    {
-        //vista
-    }
 
 
     public function store(CartRequest $request)
@@ -27,7 +21,7 @@ class CartController extends Controller
         $cart = new Cart($request->all());
 		$cart->save();
 		if (!$request->ajax()) return back()->with('success', 'Cart crated');
-		return response()->json(['status' => 'Cart created', 'Cart' => $cart], 201);
+		return response()->json([], 201);
     }
 
 
@@ -37,11 +31,6 @@ class CartController extends Controller
 		return response()->json(['cart' => $cart], 200);
 	}
 
-
-    public function edit($id)
-    {
-        //
-    }
 
     public function update(CartRequest $request, Cart $cart)
     {
