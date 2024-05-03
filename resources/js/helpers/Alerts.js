@@ -11,8 +11,11 @@ export const handlerErrors = async error => {
 			{
 				options = {
 					icon: 'error',
-					title: 'Error: Campos erroneos.',
-					text: 'Llena correctamente el formulario.'
+					title: 'Error: No hay suficiente stock.',
+
+					// icon: 'error',
+					// title: 'Error: Campos erroneos.',
+					// text: 'Llena correctamente el formulario.'
 				}
 				const errors = error.response.data.errors
 				for (let prop in errors) {
@@ -37,8 +40,8 @@ export const handlerErrors = async error => {
 		default:
 			options = {
 				icon: 'error',
-				title: 'Erro de servido',
-				text: 'Algo salio mal, espera que se revisara este error.'
+				title: 'Error',
+				text: 'Es necesario iniciar sesion'
 			}
 			break
 	}

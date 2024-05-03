@@ -18,11 +18,11 @@ class ProductController extends Controller
 	public function home()
 	{
 		$categories = Category::has('products')->select('id', 'name')->get();
-		foreach ($categories as $category){
-			$category->load(['products' => function ($query){
+		foreach ($categories as $category) {
+			$category->load(['products' => function ($query) {
 				$query->where('stock', '>', 0)
-				->with('file')
-				->limit(5);
+					->with('file')
+					->limit(5);
 			}]);
 		}
 		return view('index', compact('categories'));
@@ -31,7 +31,7 @@ class ProductController extends Controller
 	public function index(Request $request)
 	{
 		$categories = Category::get();
-		$products = Product::with('category', 'file')->whereHas('category')->get();
+		$products = Product::where('stock', '>', 0)->with('category', 'file')->whereHas('category')->get();
 		return view('products.index', compact('products', 'categories'));
 	}
 
@@ -40,7 +40,7 @@ class ProductController extends Controller
 	public function search(Request $request)
 	{
 		$search = $request->search;
-		$products = Product::with('file')->where('name', 'LIKE', '%'.$search.'%')->whereHas('category')->get();
+		$products = Product::with('file')->where('name', 'LIKE', '%' . $search . '%')->whereHas('category')->get();
 		return view('search.products', compact('products'));
 	}
 

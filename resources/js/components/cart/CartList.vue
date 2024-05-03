@@ -11,14 +11,10 @@
 			<div class="d-flex justify-content-end">
 				<button type="button" class="btn btn-danger" @click="deleteCart(cart)"><i class="fa-solid fa-trash"></i></button>
 			</div>
-			<div class="btn-group" role="group" aria-label="Basic example">
-				<form @submit.prevent="updateCartPlus(cart)">
-					<button type="submit" id="plus"  class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i></button>
-				</form>
+			<div class="" role="group" aria-label="Basic example">
+				<button type="button" @click="updateCartPlus(cart)" id="plus"  class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i></button>
 				{{cart.quantity}}
-				<form @submit.prevent="updateCartMinus(cart)">
-					<button type="submit" id="minus" class="btn btn-primary btn-sm"><i class="fa-solid fa-minus"></i></button>
-				</form>
+				<button type="button" @click="updateCartMinus(cart)" id="minus" class="btn btn-primary btn-sm"><i class="fa-solid fa-minus"></i></button>
 			</div>
       </div>
     </div>
@@ -27,7 +23,7 @@
 </template>
 
 <script>
-import { deleteMessage, successMessage } from '@/helpers/Alerts.js'
+import { deleteMessage, successMessage, handlerErrors } from '@/helpers/Alerts.js'
 import axios from 'axios';
 export default {
   props: ['carts'],
@@ -51,17 +47,20 @@ export default {
 	},
 	async updateCartPlus(cart){
 		const quantity = cart.quantity;
+		const product_id = cart.product_id;
 		try {
-			await axios.put(`/carts/plus/${cart.id}`,{ quantity})
-			
+			await axios.put(`/carts/plus/${cart.id}`,{ quantity, product_id})
+			window.location.reload()
 		} catch (error) {
-			console.error(error)
+			//console.error(error)
+			await handlerErrors(error)
 		}
 	},
 	async updateCartMinus(cart){
 		const quantity = cart.quantity;
+		const product_id = cart.product_id;
 		try {
-			await axios.put(`/carts/minus/${cart.id}`,{ quantity })
+			await axios.put(`/carts/minus/${cart.id}`,{ quantity, product_id })
 			window.location.reload()
 		} catch (error) {
 			console.error(error)

@@ -27,41 +27,65 @@ class CartController extends Controller
 
 
 
-    public function store(CartRequest $request)
+    public function store(CartRequest $request, Cart $cart)
     {
 		$user_id = Auth::user()->id;
 		$product_id = $request->product_id;
 		$amount = 1;
-		Cart::create([
-			'user_id' => $user_id,
-			'product_id' => $product_id,
-			'quantity' => $amount,
-		]);
-		if (!$request->ajax()) return back()->with('success', 'Cart crated');
+
+		$product = Product::find($request->product_id);
+		$productCart = $cart->where('product_id', $product->id)->first();
+
+		if ($productCart) {
+			$newQuantity = $productCart->quantity + $amount;
+        	if ($newQuantity > $product->stock) {
+            return response()->json(['warning' => 'No hay stock suficiente'], 422);
+        }
+			$productCart->update(['quantity' => $newQuantity]);
+			return response()->json(['success' => true], 204);
+
+		}else{
+			Cart::create([
+				'user_id' => $user_id,
+				'product_id' => $product_id,
+				'quantity' => $amount,
+			]);
+		}
 		return response()->json([], 201);
+
+
     }
 
 
 
     public function updatePlus(CartUpdateRequest $request, Cart $cart)
     {
-		//validar si esta asociado product y usuario con cart
-		// Actualizar cantidad
-		$cart->update(['quantity' => $cart->quantity + 1]);
-
-		return back();
-		return response()->json(['success' => true], 204);
+		// $validationCart = $cart->where('product_id', $product->id)->first();
+		$product = Product::find($request->product_id);
+		$productCart = $cart->where('product_id', $product->id)->first();
+		if ($productCart) {
+			$newQuantity = $productCart->quantity + 1;
+        	if ($newQuantity > $product->stock) {
+            return response()->json(['warning' => 'No hay stock suficiente'], 422);
+        }
+			$productCart->update(['quantity' => $newQuantity]);
+			return response()->json(['success' => true], 204);
+		}
     }
 
 	public function updateMinus(CartUpdateRequest $request, Cart $cart)
     {
-		// Actualizar cantidad
-		$cart->update(['quantity' => $cart->quantity - 1]);
+		$product = Product::find($request->product_id);
+		$productCart = $cart->where('product_id', $product->id)->first();
 
-		if ('quantity' == 0){
-			$cart->delete();
+		if ($productCart) {
+			$newQuantity = $productCart->quantity - 1;
+        	if ($newQuantity == 0) {
+			$productCart->delete();
+            return response()->json([], 204);
+        	}
 		}
-		return back();
+		$productCart->update(['quantity' => $newQuantity]);
 		return response()->json(['success' => true], 204);
     }
 
