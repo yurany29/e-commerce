@@ -27,4 +27,12 @@ body{
 	width: 100%;
 	max-width: 300px;
 	height: 450px;
-  }
+}
+.btn{
+	border-radius: 4px;
+}
+.btn-group {
+	display: flex;
+	margin: 10px;
+	align-items: center;
+}

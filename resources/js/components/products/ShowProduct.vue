@@ -1,5 +1,4 @@
 <template>
-<!-- <button type="button"  class="btn btn-primary justify-content-center mx-2 my-5"><i class="fa-solid fa-cart-plus"></i> Ver carrito</button> -->
 <section v-if="product">
   <div class="container card tarjet">
     <img :src="product.file.route" class="card-img-top " alt="Producto">
@@ -14,7 +13,9 @@
       <span class="mt-2">
         <strong>Stock: </strong> {{ product.stock }}
       </span>
-	  <button type="button" @click="addCart(product.id)" class="btn btn-primary justify-content-center mx-2 my-5"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</button>
+	  <form @submit.prevent="addCart">
+	  	<button type="submit" class="btn btn-primary justify-content-center mx-2 my-5"><i class="fa-solid fa-cart-plus"></i> Agregar al carrito</button>
+	  </form>
     </div>
   </div>
 </section>
@@ -34,19 +35,22 @@ export default {
 
   data() {
     return {
+
     };
   },
 
   methods: {
-	async addCart(productId) {
-		try {
-			await axios.post('/carts', this.productId)
-				await successMessage({ reload: true })
-			} catch (error) {
-				console.error(error)
-				// this.back_errors = await handlerErrors(error)
-			}
-	}
+	async addCart() {
+      const productId = this.product.id; // Acceder al ID del producto
+
+      try {
+        await axios.post('/carts', {'product_id':productId}); // Enviar el ID del producto
+        await successMessage({ reload: true });
+      } catch (error) {
+        console.error(error);
+        await handlerErrors(error);
+      }
+    },
   },
 
 

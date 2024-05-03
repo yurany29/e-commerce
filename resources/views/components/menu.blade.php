@@ -65,6 +65,13 @@
 								</a>
 							@endrole
 
+							@role('user')
+								{{-- cart --}}
+								<a class="dropdown-item" href="{{route('carts.index')}}">
+									Ver carrito
+								</a>
+							@endrole
+
                             {{-- Logout --}}
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

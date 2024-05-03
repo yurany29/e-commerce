@@ -53,10 +53,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 	//cart
 	Route::group(['prefix' => 'carts', 'middleware' => ['role:user'], 'controller' => CartController::class], function () {
-		// Route::get('/', 'index')->name('categories.index');
+		Route::get('/', 'index')->name('carts.index');
 		Route::post('/', 'store')->name('carts.store');
-		// Route::put('/{category}', 'update')->name('categories.update');
-		// Route::delete('/{category}', 'destroy')->name('categories.destroy');
+		Route::put('/plus/{cart}', 'updateplus')->name('carts.update');
+		Route::put('/minus/{cart}', 'updateminus')->name('carts.update');
+		Route::delete('/{cart}', 'destroy')->name('carts.destroy');
 	});
 
 });

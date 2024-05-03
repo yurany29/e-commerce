@@ -11,6 +11,7 @@ import BackendError from './components/Components/BackendError.vue'
 import AllProducts from './components/products/AllProducts.vue'
 import ShowProduct from './components/products/ShowProduct.vue'
 import SearchProducts from './components/search/SearchProducts.vue'
+import CartList from './components/cart/CartList.vue'
 
 const app = createApp({
 	components: {
@@ -21,6 +22,7 @@ const app = createApp({
 		AllProducts,
 		ShowProduct,
 		SearchProducts,
+		CartList,
 	}
 });
 
