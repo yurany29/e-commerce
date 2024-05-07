@@ -10,7 +10,7 @@
         <h4><strong>Categoría: {{ category.name }}</strong></h4>
       </div>
 		<div class="row">
-			<div v-for="product in category.products" :key="product.id" class="card mx-2 my-3 card_size col-md-6 col-sm-6">
+			<div v-for="product in category.products" :key="product.id" class="mx-2 my-3 card_size col-md-6 col-sm-6">
 				<product :product="product"/>
 			</div>
 		</div>

@@ -4,6 +4,6 @@
             <h1>CARRITO DE COMPRAS</h1>
         </div>
 
-			<cart-list :carts="{{$carts}}" />
+			<cart-list :carts="{{$carts}}" :total_sum="{{$total_sum}}" />
     </section>
 </x-app>

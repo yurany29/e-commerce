@@ -11,19 +11,19 @@ use App\Http\Controllers\CategoryController;
 Auth::routes();
 Route::get('/',[ProductController::class, 'home'])->name('products.home');
 
-//products user
-Route::group(['prefix' => 'products', 'controller' => ProductController::class], function () {
-	Route::get('/show/{product}', 'show')->name('products.show');
-	Route::get('/search', 'search')->name('products.search');
-});
+	Route::group(['middleware' => ['auth']], function () {
+		Route::get('/home', [HomeController::class, 'index'])->name('home'); //Ruta de despues de autentificacion "HOME"
 
-//categories user
-Route::group(['prefix' => 'categories', 'controller' => CategoryController::class], function () {
-	Route::get('/all/{category}', 'show')->name('categories.show');
-});
+	//products user
+	Route::group(['prefix' => 'products', 'controller' => ProductController::class], function () {
+		Route::get('/show/{product}', 'show')->name('products.show');
+		Route::get('/search', 'search')->name('products.search');
+	});
 
-Route::group(['middleware' => ['auth']], function () {
-	Route::get('/home', [HomeController::class, 'index'])->name('home'); //Ruta de despues de autentificacion "HOME"
+	//categories user
+	Route::group(['prefix' => 'categories', 'controller' => CategoryController::class], function () {
+		Route::get('/all/{category}', 'show')->name('categories.show');
+	});
 
 
 	//users

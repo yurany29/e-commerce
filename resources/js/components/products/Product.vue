@@ -11,7 +11,7 @@
 					<strong>Stock: </strong> {{ product.stock }}
 				</span>
 			</div>
-			<a :href="`/products/show/${product.id}`" class="btn btn-primary justify-content-center mx-2 my-3">Ver detalles</a>
+			<a :href="`/products/show/${product.id}`" class="btn btn-primary justify-content-center mx-4 my-3">Ver detalles</a>
 		</div>
 	</div>
 

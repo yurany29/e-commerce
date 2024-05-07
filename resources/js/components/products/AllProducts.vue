@@ -5,8 +5,8 @@
 			<h1>Productos de la categoria {{ category.name }}</h1>
 		</div>
 			<div class="row" >
-				<div v-for="product in products" :key="product.id">
-				<product :product="product" />
+				<div v-for="product in products" :key="product.id" class="mx-2 my-3 card_size col-md-6 col-sm-6">
+					<product :product="product" />
 				</div>
 			</div>
 		</div>

@@ -12,18 +12,19 @@ use App\Http\Requests\Cart\CartUpdateRequest;
 class CartController extends Controller
 {
     public function index(Request $request)
-    {
-		$user_id = Auth::user()->id;
-        $carts = Cart::has('product')->where('user_id', $user_id)->get();
-		foreach ($carts as $cart){
-			$cart->total_price = $cart->quantity * $cart->product->price;
-			$cart->load(['product' => function ($query){
-				$query->with('file');
-			}]);
-		}
-		//dd($carts);
-        return view('cart.index', compact('carts'));
+{
+    $user_id = Auth::user()->id;
+    $carts = Cart::has('product')->where('user_id', $user_id)->with('product.file')->get();
+
+    foreach ($carts as $cart) {
+        $cart->total_price = $cart->quantity * $cart->product->price;
     }
+    $total_sum = $carts->sum(function ($cart) {
+        return $cart->total_price;
+    });
+
+    return view('cart.index', compact('carts', 'total_sum'));
+}
 
 
 
@@ -69,7 +70,7 @@ class CartController extends Controller
             return response()->json(['warning' => 'No hay stock suficiente'], 422);
         }
 			$productCart->update(['quantity' => $newQuantity]);
-			return response()->json(['success' => true], 204);
+			return response()->json([], 204);
 		}
     }
 

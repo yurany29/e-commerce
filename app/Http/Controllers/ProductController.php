@@ -69,10 +69,6 @@ class ProductController extends Controller
 	}
 
 
-	public function edit($id)
-	{
-		//
-	}
 
 	public function update(ProductUpdateRequest $request, Product $product)
 	{
